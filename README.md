@@ -68,14 +68,11 @@ A lightweight Retrieval-Augmented Generation (RAG) chatbot that allows users to 
 
 ```bash
 # Clone the repo
-$ git clone https://github.com/yourusername/rag-pdf-chatbot.git
-$ cd rag-pdf-chatbot
+$ git clone https://huggingface.co/spaces/higher5fh/pdf-chatbot
 
 # Install dependencies
 $ pip install -r requirements.txt
 
-# Optional: Download model weights locally (optional for Spaces)
-$ transformers-cli download google/flan-t5-small
 ```
 
 ---
