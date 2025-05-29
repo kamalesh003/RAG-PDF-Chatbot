@@ -1,191 +1,136 @@
-Sure! Below is the **complete GitHub `README.md`** content for your **RAG PDF Chatbot** project, ready to copy and paste into your repository.
-
----
-
-```markdown
 # 🤖 RAG PDF Chatbot
 
-An interactive chatbot that can answer questions from PDF files using **Retrieval-Augmented Generation (RAG)**. Powered by **Flan-T5**, **FAISS**, **LangChain**, and **Gradio**, this project demonstrates how to combine lightweight open-source models for document question answering.
+A lightweight Retrieval-Augmented Generation (RAG) chatbot that allows users to upload a PDF, process it using chunked vector embeddings (FAISS), and query the document using natural language. This project uses:
+
+* **Flan-T5 Small** as the language model
+* **FAISS** for efficient document vector similarity search
+* **LangChain** for orchestrating retrieval and generation
+* **Gradio** for the web interface
+* **Hugging Face Spaces** for public deployment
 
 ---
 
 ## 🚀 Features
 
-- 🧠 **Context-aware QA** from any PDF
-- 🏗️ **Modular pipeline** with LangChain for easy customization
-- ⚙️ Uses **Flan-T5-small** as the LLM and **MiniLM** embeddings
-- 🔍 Fast retrieval using **FAISS**
-- 🖥️ Clean **Gradio UI** for seamless interaction
+* Upload any PDF file and get insights instantly
+* Uses vector embeddings for semantic search
+* Fast and efficient QA using Flan-T5
+* Clean, modern Gradio UI
+* Ready for deployment on Hugging Face Spaces
 
 ---
 
-## 🧱 Tech Stack
+## 🧠 Architecture
 
-| Component       | Technology                         |
-|----------------|-------------------------------------|
-| LLM            | `google/flan-t5-small`             |
-| Embeddings     | `sentence-transformers/all-MiniLM-L6-v2` |
-| Retriever      | FAISS (via LangChain)              |
-| Pipeline       | LangChain + HuggingFace            |
-| UI             | Gradio                             |
-| PDF Loader     | PyMuPDF                            |
+```text
+     ┌────────────┐
+     │ Upload PDF │
+     └────┬───────┘
+          │
+          ▼
+      ┌─────────────┐
+      │PyMuPDFLoader│
+      └────┬────────┘
+           ▼
+  ┌────────────────────────┐
+  │Text Splitter(Recursive)│
+  └────────┬───────────────┘
+           ▼
+   ┌────────────────────┐
+   │  FAISS Vector Store │
+   └────────┬───────────┘
+            ▼
+   ┌────────────────────────┐
+   │ Retrieval + Prompting  │◄───── User Question
+   └────────┬───────────────┘
+            ▼
+   ┌───────────────────────┐
+   │  Flan-T5 (Text2Text)  │
+   └────────┬──────────────┘
+            ▼
+     Answer with Sources
+```
 
 ---
 
-## 🗂️ Project Structure
+## 🧩 Tech Stack
 
-```
-
-rag-pdf-chatbot/
-├── app.py                  # Gradio UI for the chatbot
-├── config.py               # Model, tokenizer, and prompt setup
-├── utils.py                # PDF processing, embedding, and QA logic
-├── requirements.txt        # Required Python packages
-└── README.md               # Project documentation
-
-````
+* `transformers`
+* `langchain`
+* `faiss-cpu`
+* `PyMuPDF`
+* `gradio`
+* `sentence-transformers`
 
 ---
 
-## ⚙️ Setup Instructions
-
-### 1. Clone the repository
+## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/rag-pdf-chatbot.git
-cd rag-pdf-chatbot
-````
+# Clone the repo
+$ git clone https://github.com/yourusername/rag-pdf-chatbot.git
+$ cd rag-pdf-chatbot
 
-### 2. Create a virtual environment (optional but recommended)
+# Install dependencies
+$ pip install -r requirements.txt
 
-```bash
-python -m venv venv
-source venv/bin/activate   # On Windows: venv\Scripts\activate
+# Optional: Download model weights locally (optional for Spaces)
+$ transformers-cli download google/flan-t5-small
 ```
 
-### 3. Install dependencies
+---
 
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Run the application
+## 🛠️ Usage (Locally)
 
 ```bash
 python app.py
 ```
 
-The Gradio interface will launch at [http://localhost:7860](http://localhost:7860)
+Visit `http://localhost:7860` in your browser.
 
 ---
 
-## 📚 How It Works
+## 🌍 Public Deployment (Hugging Face Spaces)
 
-1. **Upload PDF**
-   The PDF is split into overlapping chunks using `RecursiveCharacterTextSplitter`.
+This app is deployed on Hugging Face Spaces. [Click here to try it live](https://huggingface.co/spaces/higher5fh/pdf-chatbot).
 
-2. **Embed Chunks**
-   Each chunk is embedded using the `all-MiniLM-L6-v2` sentence transformer.
+To deploy it yourself:
 
-3. **Store in FAISS**
-   Chunks are stored in a FAISS vector database for fast similarity search.
-
-4. **Ask a Question**
-   A user asks a question via the Gradio UI.
-
-5. **Retrieve Context**
-   Relevant chunks are retrieved using similarity search.
-
-6. **Generate Answer**
-   The retrieved context is passed to the `flan-t5-small` model to generate a concise answer.
+1. Create a new Space (type: Gradio)
+2. Upload all project files
+3. Include `requirements.txt` and `app.py`
+4. The Space will automatically launch
 
 ---
 
-## 🖼️ Demo UI
+## 📁 Project Structure
 
-> *You can include a screenshot here*
-> Example:
-> ![UI Screenshot](assets/ui-demo.png)
-
----
-
-## 🧪 Example Use Cases
-
-* Summarizing academic research papers
-* Answering questions from legal documents
-* Extracting insights from contracts or manuals
-* Creating AI-powered document assistants
-
----
-
-## 📝 Sample Prompt Template
-
-```text
-Use the following extracted parts of a document to answer the question.
-Provide a concise, precise, and accurate answer. If you don't know, say "I don't know".
-
-Context:
-{context}
-
-Question:
-{question}
-
-Answer:
+```
+rag-pdf-chatbot/
+├── app.py                  # Gradio UI + interface
+├── config.py               # Model and pipeline configuration
+├── utils.py                # PDF processing and question answering
+├── requirements.txt        # Dependencies
+└── README.md               # Documentation
 ```
 
 ---
 
-## 📌 TODO
+## 🔐 Security
 
-* [ ] Add source document citation in responses
-* [ ] Enable multi-PDF vector database
-* [ ] Save FAISS index for persistent use
-* [ ] Stream answers for better UX
+* This project does not store any PDFs or user data.
+* Runs entirely in memory.
 
----
 
-## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+## ❤️ Acknowledgments
 
----
-
-## 🤝 Contributing
-
-Contributions and suggestions are welcome!
-Please open issues or submit PRs to help improve this project.
-
----
-
-## 🙏 Acknowledgements
-
-* [LangChain](https://github.com/hwchase17/langchain)
-* [HuggingFace Transformers](https://huggingface.co)
-* [FAISS](https://github.com/facebookresearch/faiss)
+* [LangChain](https://github.com/langchain-ai/langchain)
+* [HuggingFace Transformers](https://huggingface.co/docs/transformers)
 * [Gradio](https://gradio.app)
-* [Sentence-Transformers](https://www.sbert.net)
+* [Sentence-Transformers](https://www.sbert.net/)
+* [FAISS](https://github.com/facebookresearch/faiss)
 
 ---
 
-## 🔗 Related Resources
 
-* [Flan-T5 on HuggingFace](https://huggingface.co/google/flan-t5-small)
-* [MiniLM Embeddings](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
-* [LangChain Documentation](https://docs.langchain.com/)
-* [FAISS by Facebook](https://github.com/facebookresearch/faiss)
-
----
-
-```
-
----
-
-Let me know if you'd like me to generate:
-
-- A `requirements.txt` file
-- A `Dockerfile` for deployment
-- A Hugging Face Spaces setup
-- CI/CD configuration
-
-Happy to help!
-```
