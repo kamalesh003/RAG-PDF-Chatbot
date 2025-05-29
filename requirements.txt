@@ -1,0 +1,28 @@
+# --- LangChain core ---
+langchain>=0.1.0
+langchain-community>=0.0.21
+langchain-huggingface>=0.0.1
+
+# --- PDF loader ---
+PyMuPDF
+
+
+# --- Transformers and embeddings ---
+transformers>=4.40.0
+sentence-transformers>=2.2.2
+accelerate>=0.29.0
+
+# --- Vector store ---
+faiss-cpu>=1.7.4
+
+# --- Gradio for UI ---
+gradio>=4.24.0
+
+# --- Torch ---
+torch>=2.1.0
+
+
+
+# Optional: for Hugging Face Spaces compatibility
+uvicorn
+fastapi
